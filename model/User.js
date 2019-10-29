@@ -6,21 +6,28 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    username: {
-        type: String,
-        required: true
-    },
     email: {
         type: String,
+        unique: true, // Unique index. If you specify `unique: true`
         required: true
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        min:4,
+        max:20
     },
-    date: {
+    status:{
+        type:Boolean,
+        default:1
+    },
+    createdDate: {
         type: Date,
         default: Date.now
+    },
+    updatedDate: {
+        type: Date,
+        default: null
     }
 });
 module.exports = User = mongoose.model('users', UserSchema);
