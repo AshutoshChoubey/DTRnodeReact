@@ -1,22 +1,19 @@
 import React, { Fragment, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import cookie from "js-cookie";
 import logo from "../logo.jpeg";
 function Layout(props) {
 
   const handleLogout = e => {
     e.preventDefault();
-    // cookie.remove("token");
     localStorage.removeItem("token");
     props.logout();
   };
-  const [pathname, setPathname] = useState('');
+  const [pathname, setPathname] = useState('/');
   const checkActive = (match, location) => {
-    //some additional logic to verify you are in the home URI
     if (!location) return false;
     setPathname(location.pathname);
-    return pathname === "/";
+    return pathname === "/" ? false : pathname === "/";
   }
   return (
     <div>

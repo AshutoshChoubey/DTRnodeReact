@@ -3,7 +3,9 @@ import AllReducers from "./reducers/AllReducers";
 
 const initialStates = {
   auth: {
-    loggedIn: false,
+    loggedIn: function(){
+    	return localStorage.getItem('token')?true:false;
+    },
     user: {}
   }
 };

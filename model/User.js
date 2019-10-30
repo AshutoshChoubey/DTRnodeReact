@@ -28,6 +28,10 @@ const UserSchema = new Schema({
     updatedDate: {
         type: Date,
         default: null
+    },
+    deletedDate: {
+        type: Date,
+        default: null
     }
 });
 module.exports = User = mongoose.model('users', UserSchema);

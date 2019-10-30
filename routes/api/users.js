@@ -15,7 +15,6 @@ router.post('/register', (req, res) => {
     // console.log(req);
     let {
         name,
-        username,
         email,
         password,
         confirm_password
@@ -29,15 +28,15 @@ router.post('/register', (req, res) => {
         return res.send('Must include email and password')
       }
     // Check for the unique Username
-    User.findOne({
-        username: username
-    }).then(user => {
-        if (user) {
-            return res.status(400).json({
-                msg: "Username is already taken."
-            });
-        }
-    })
+    // User.findOne({
+    //     username: username
+    // }).then(user => {
+    //     if (user) {
+    //         return res.status(400).json({
+    //             msg: "Username is already taken."
+    //         });
+    //     }
+    // })
     // Check for the Unique Email
     User.findOne({
         email: email
@@ -51,7 +50,7 @@ router.post('/register', (req, res) => {
     // The data is valid and new we can register the user
     let newUser = new User({
         name,
-        username,
+        // username,
         password,
         email
     });
