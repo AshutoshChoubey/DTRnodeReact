@@ -12,14 +12,13 @@ const User = require('../../model/User');
  * @access Public
  */
 router.post('/register', (req, res) => {
-    // console.log(req);
     let {
         name,
         email,
         password,
-        confirm_password
+        password_confirmation
     } = req.body;
-    if (password !== confirm_password) {
+    if (password !== password_confirmation) {
         return res.status(400).json({
             msg: "Password do not match."
         });
@@ -27,17 +26,6 @@ router.post('/register', (req, res) => {
     if (!email || !password) {
         return res.send('Must include email and password')
       }
-    // Check for the unique Username
-    // User.findOne({
-    //     username: username
-    // }).then(user => {
-    //     if (user) {
-    //         return res.status(400).json({
-    //             msg: "Username is already taken."
-    //         });
-    //     }
-    // })
-    // Check for the Unique Email
     User.findOne({
         email: email
     }).then(user => {
@@ -76,10 +64,12 @@ router.post('/register', (req, res) => {
  */
 router.post('/login', (req, res) => {
     User.findOne({
-        username: req.body.username
+        email: req.body.email
     }).then(user => {
         if (!user) {
             return res.status(404).json({
+                token: `Bearer ${token}`,
+                user: user,
                 msg: "Username is not found.",
                 success: false
             });

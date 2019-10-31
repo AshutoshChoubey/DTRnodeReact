@@ -1,27 +1,42 @@
 import React, { Component } from "react";
-// import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-// import axios from "axios";
-class Profile extends Component {
-  constructor(props) {
-    super(props);
-  }
+import TaskForm from '../Task/taskForm';
+import { Link } from 'react-router-dom'
+class Home extends Component {
   render() {
-    return (
-      <div >
-        Welcome To DTR
-      </div>
-    );
+    if (this.props.loggedIn) {
+      return (
+        <div className="container">
+          <h1>Hello {this.props.name}</h1>
+          <TaskForm />
+        </div >
+      )
+    }
+    else {
+      return (
+        <div> <h1>Welcome To DTR</h1>
+          <h2>Please login to see inside <Link to="/login">Login</Link></h2>
+          <h3>If you are new please register here <Link to="/register">Sign Up</Link></h3>
+        </div >
+      )
+    }
   }
 }
 
 const mapStateToProps = state => {
-  return {
-    name: state.auth.user.name,
-    email: state.auth.user.email
-  };
+  if (state.auth.loggedIn && state.auth.user) {
+    let userData = JSON.parse(state.auth.user);
+    return {
+      name: userData.name,
+      email: userData.email,
+      loggedIn: state.auth.loggedIn
+    };
+  }
+  else {
+    return {};
+  }
 };
 export default connect(
   mapStateToProps,
   null
-)(Profile);
+)(Home);

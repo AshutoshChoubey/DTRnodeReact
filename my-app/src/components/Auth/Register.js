@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
-import cookie from "js-cookie";
-import Error from "../Error";
-export default class Register extends Component {
+class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,16 +18,26 @@ export default class Register extends Component {
       password: this.state.password,
       password_confirmation: this.state.password_confirmation
     };
-    axios
-      .post("http://localhost:8000/api/auth/register", data)
-      .then(res => {
-        // cookie.set("token", res.data.access_token);
-        localStorage.setItem("token", res.data.access_token);
-        localStorage.setItem("user", res.data.user);
-        // cookie.set("user", res.data.user);
-        this.props.history.push("/home");
-      })
-      .catch(e => this.setState({ errors: e.response.data.errors }));
+    fetch('http://localhost:9000/api/users/register', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(
+        (result) => {
+          console.log(result);
+          this.props.history.push("/login");
+        },
+        (error) => {
+          console.log(error);
+        }
+      )
+      .catch(err => {
+        this.setState({ errors: err });
+      });
   };
   handleInput = e => {
     e.preventDefault();
@@ -77,3 +84,7 @@ export default class Register extends Component {
     );
   }
 }
+
+
+export default Register;
+

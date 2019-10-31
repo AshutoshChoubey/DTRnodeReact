@@ -7,6 +7,7 @@ function Layout(props) {
   const handleLogout = e => {
     e.preventDefault();
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     props.logout();
   };
   const [pathname, setPathname] = useState('/');
@@ -18,7 +19,7 @@ function Layout(props) {
   return (
     <div>
       <div className="navbar  navbar-expand-lg bg-dark navbar-dark">
-        <NavLink to="/" className="navbar-brand"><img className="rounded img-fluid" style={{ height: '40px', width: '40px' }} src={logo} /></NavLink>
+        <NavLink to="/" className="navbar-brand"><img className="rounded img-fluid" style={{ height: '40px', width: '40px' }} src={logo} alt="codeclouds logo" /></NavLink>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>

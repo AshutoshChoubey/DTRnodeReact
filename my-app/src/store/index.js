@@ -1,12 +1,16 @@
 import { createStore } from "redux";
 import AllReducers from "./reducers/AllReducers";
-
+let loginStatus=()=>{
+  return localStorage.getItem('token')?true:false;
+}
+let loginDetail=()=>{
+  return localStorage.getItem('user')?localStorage.getItem('user'):null;
+   
+}
 const initialStates = {
   auth: {
-    loggedIn: function(){
-    	return localStorage.getItem('token')?true:false;
-    },
-    user: {}
+    loggedIn: loginStatus(),
+    user: loginDetail()
   }
 };
 const store = createStore(

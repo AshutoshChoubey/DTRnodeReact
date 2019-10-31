@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
-import cookie from "js-cookie";
 import { connect } from "react-redux";
 class Login extends Component {
   constructor(props) {
@@ -10,16 +8,28 @@ class Login extends Component {
   handleForm = e => {
     e.preventDefault();
     const data = { email: this.state.email, password: this.state.password };
-
-    axios
-      .post("http://localhost:8000/api/auth/login", data)
-      .then(res => {
-        // cookie.set("token", res.data.access_token);
-        localStorage.setItem("token", res.data.access_token);
-        this.props.setLogin(res.data.user);
-        this.props.history.push("/home");
-      })
-      .catch(e => this.setState({ errors: e.response.data.errors }));
+    fetch('http://localhost:9000/api/users/login', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(
+        (result) => {
+          localStorage.setItem("token", result.token);
+          localStorage.setItem("user", JSON.stringify(result.user));
+          this.props.setLogin(JSON.stringify(result.user));
+          this.props.history.push("/home");
+        },
+        (error) => {
+          console.log(error);
+        }
+      )
+      .catch(err => {
+        this.setState({ errors: err });
+      });
   };
   handleInput = e => {
     e.preventDefault();

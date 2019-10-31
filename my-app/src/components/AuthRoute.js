@@ -9,20 +9,19 @@ const AuthRoute = ({ component: Component, ...rest }) => {
         rest.loggedIn ? (
           <Component {...props} />
         ) : (
-          <Redirect
-            to={{
-              pathname: "/login",
-              state: { from: props.location }
-            }}
-          />
-        )
+            <Redirect
+              to={{
+                pathname: "/login",
+                state: { from: props.location }
+              }}
+            />
+          )
       }
     />
   );
 };
 
 const mapStateToProps = state => {
-  // console.log(state);
   return {
     loggedIn: state.auth.loggedIn
   };

@@ -22,7 +22,7 @@ class Form extends React.Component {
     }
     handleSubmit = (e) => { e.preventDefault(); console.log(this.state) }
     render() {
-        let { notes, date, description, taskList } = this.state
+        let { taskList } = this.state//let { notes, date, description, taskList } = this.state
         return (
             <div className="content">
                 <form onSubmit={this.handleSubmit} onChange={this.handleChange} >
