@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import axios from 'axios';
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -8,28 +9,37 @@ class Login extends Component {
   handleForm = e => {
     e.preventDefault();
     const data = { email: this.state.email, password: this.state.password };
-    fetch('http://localhost:9000/api/users/login', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(res => res.json())
-      .then(
-        (result) => {
-          localStorage.setItem("token", result.token);
-          localStorage.setItem("user", JSON.stringify(result.user));
-          this.props.setLogin(JSON.stringify(result.user));
-          this.props.history.push("/home");
-        },
-        (error) => {
-          console.log(error);
-        }
-      )
-      .catch(err => {
-        this.setState({ errors: err });
-      });
+    axios
+      .post("http://localhost:9000/api/users/login", data)
+      .then(result => {
+        localStorage.setItem("token", result.data.token);
+        localStorage.setItem("user", JSON.stringify(result.data.user));
+        this.props.setLogin(JSON.stringify(result.data.user));
+        this.props.history.push("/home");
+      })
+      .catch(e => this.setState({ errors: e.response }));
+    // fetch('http://localhost:9000/api/users/login', {
+    //   method: 'POST',
+    //   body: JSON.stringify(data),
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   }
+    // })
+    //   .then(res => res.json())
+    //   .then(
+    //     (result) => {
+    //       localStorage.setItem("token", result.token);
+    //       localStorage.setItem("user", JSON.stringify(result.user));
+    //       this.props.setLogin(JSON.stringify(result.user));
+    //       this.props.history.push("/home");
+    //     },
+    //     (error) => {
+    //       console.log(error);
+    //     }
+    //   )
+    //   .catch(err => {
+    //     this.setState({ errors: err });
+    //   });
   };
   handleInput = e => {
     e.preventDefault();

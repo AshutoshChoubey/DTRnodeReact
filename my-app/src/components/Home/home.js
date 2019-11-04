@@ -1,14 +1,29 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import TaskForm from '../Task/taskForm';
+// import TaskForm from '../Task/taskForm';
 import { Link } from 'react-router-dom'
 class Home extends Component {
+  constructor(props)
+  {
+    super(props);
+    this.state={
+      editUser:0
+    }
+  }
+  handleEvent=e=>{
+    this.setState({editUser:1})
+  }
   render() {
     if (this.props.loggedIn) {
       return (
         <div className="container">
-          <h1>Hello {this.props.name}</h1>
-          <TaskForm />
+          <div className="card" >
+            <div className="card-body">
+              <h5 className="card-title">WelCome {this.props.name}</h5>
+              <p className="card-text">Email :{this.props.email}</p>
+              <button onClick={this.handleEvent} className="btn btn-primary ">Edit</button>
+            </div>
+          </div>
         </div >
       )
     }
