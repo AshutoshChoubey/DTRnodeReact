@@ -1,8 +1,9 @@
 import React from "react"
 import TaskList from "./taskList"
+import axios from 'axios';
 class Form extends React.Component {
     state = {
-        taskList: [{ projectName: "", task: "", taskNotes: "", taskStatus: "" }],
+        taskList: [{index:Math.random(), projectName: "", task: "", taskNotes: "", taskStatus: "" }],
         date: "",
         description: "",
     }
@@ -10,17 +11,28 @@ class Form extends React.Component {
         if (["projectName", "task", "taskNotes", "taskStatus"].includes(e.target.name)) {
             let taskList = [...this.state.taskList]
             taskList[e.target.dataset.id][e.target.name] = e.target.value;
-            // this.setState({ taskList }, () => console.log(this.state.taskList))
         } else {
             this.setState({ [e.target.name]: e.target.value.toUpperCase() })
         }
     }
-    addCat = (e) => {
+    addNewRow = (e) => {
         this.setState((prevState) => ({
-            taskList: [...prevState.taskList, { projectName: "", task: "", taskNotes: "", taskStatus: "" }],
+            taskList: [...prevState.taskList, {index:Math.random(), projectName: "", task: "", taskNotes: "", taskStatus: "" }],
         }));
     }
-    handleSubmit = (e) => { e.preventDefault(); console.log(this.state) }
+    handleSubmit = (e) => { e.preventDefault(); 
+        console.log(JSON.stringify(this.state));
+        let data={formData:this.state,userData:localStorage.getItem('user')}
+            axios.defaults.headers.common["Authorization"] =localStorage.getItem('token');
+            axios.post("http://localhost:9000/api/task",data).then(res => {
+               console.log(res);
+            });
+     }
+    clickOnDelete(record){
+        this.setState({
+            taskList: this.state.taskList.filter(r => r !== record)
+        });
+    }
     render() {
         let { taskList } = this.state//let { notes, date, description, taskList } = this.state
         return (
@@ -56,11 +68,11 @@ class Form extends React.Component {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <TaskList taskList={taskList} />
+                                            <TaskList delete={this.clickOnDelete.bind(this)} taskList={taskList} />
                                         </tbody>
                                         <tfoot>
                                             <tr><td colSpan="4">
-                                                <button onClick={this.addCat} type="button" className="btn btn-primary text-center">Add</button>
+                                                <button onClick={this.addNewRow} type="button" className="btn btn-primary text-center">Add</button>
                                             </td></tr>
                                         </tfoot>
                                     </table>

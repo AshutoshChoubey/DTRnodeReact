@@ -18,10 +18,15 @@ class Login extends Component {
       .then(res => res.json())
       .then(
         (result) => {
-          localStorage.setItem("token", result.token);
+          console.log(result.success);
+          if(result.success)
+          {
+                 localStorage.setItem("token", result.token);
           localStorage.setItem("user", JSON.stringify(result.user));
           this.props.setLogin(JSON.stringify(result.user));
           this.props.history.push("/home");
+          }
+       
         },
         (error) => {
           console.log(error);
