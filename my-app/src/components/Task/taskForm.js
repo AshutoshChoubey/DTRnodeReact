@@ -72,7 +72,7 @@ class Form extends React.Component {
                                         </tbody>
                                         <tfoot>
                                             <tr><td colSpan="4">
-                                                <button onClick={this.addNewRow} type="button" className="btn btn-primary text-center">Add</button>
+                                                <button onClick={this.addNewRow} type="button" className="btn btn-primary text-center"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
                                             </td></tr>
                                         </tfoot>
                                     </table>
