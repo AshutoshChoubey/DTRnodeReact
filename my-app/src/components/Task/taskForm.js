@@ -1,5 +1,6 @@
 import React from "react"
 import TaskList from "./taskList"
+<<<<<<< HEAD
 import axios from "axios"
 import UniqueID from 'react-html-id';
 class Form extends React.Component {
@@ -11,6 +12,14 @@ class Form extends React.Component {
             date: "",
             description: "",
         }
+=======
+import axios from 'axios';
+class Form extends React.Component {
+    state = {
+        taskList: [{index:Math.random(), projectName: "", task: "", taskNotes: "", taskStatus: "" }],
+        date: "",
+        description: "",
+>>>>>>> dev
     }
 
     handleChange = (e) => {
@@ -18,15 +27,20 @@ class Form extends React.Component {
             let taskList = [...this.state.taskList]
             // taskList['id'] = this.nextUniqueId();
             taskList[e.target.dataset.id][e.target.name] = e.target.value;
-            // this.setState({ taskList }, () => console.log(this.state.taskList))
         } else {
             this.setState({ [e.target.name]: e.target.value })
         }
     }
+<<<<<<< HEAD
     addCat = (e) => {
         // rows.push({index: new Date().getTime()});
         this.setState((prevState) => ({
             taskList: [...prevState.taskList, {  projectName: "", task: "", taskNotes: "", taskStatus: "" }],
+=======
+    addNewRow = (e) => {
+        this.setState((prevState) => ({
+            taskList: [...prevState.taskList, {index:Math.random(), projectName: "", task: "", taskNotes: "", taskStatus: "" }],
+>>>>>>> dev
         }));
 
         //         let rows = this.state.taskList;
@@ -63,6 +77,22 @@ class Form extends React.Component {
         taskList.splice(index, 1);
         this.setState({ taskList: taskList });
     }
+<<<<<<< HEAD
+=======
+    handleSubmit = (e) => { e.preventDefault(); 
+        console.log(JSON.stringify(this.state));
+        let data={formData:this.state,userData:localStorage.getItem('user')}
+            axios.defaults.headers.common["Authorization"] =localStorage.getItem('token');
+            axios.post("http://localhost:9000/api/task",data).then(res => {
+               console.log(res);
+            });
+     }
+    clickOnDelete(record){
+        this.setState({
+            taskList: this.state.taskList.filter(r => r !== record)
+        });
+    }
+>>>>>>> dev
     render() {
         let { taskList } = this.state//let { notes, date, description, taskList } = this.state
         return (
@@ -98,11 +128,15 @@ class Form extends React.Component {
                                             </tr>
                                         </thead>
                                         <tbody>
+<<<<<<< HEAD
                                             <TaskList taskList={taskList} onDelete={this.deteteRow} />
+=======
+                                            <TaskList delete={this.clickOnDelete.bind(this)} taskList={taskList} />
+>>>>>>> dev
                                         </tbody>
                                         <tfoot>
                                             <tr><td colSpan="4">
-                                                <button onClick={this.addCat} type="button" className="btn btn-primary text-center">Add</button>
+                                                <button onClick={this.addNewRow} type="button" className="btn btn-primary text-center"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
                                             </td></tr>
                                         </tfoot>
                                     </table>

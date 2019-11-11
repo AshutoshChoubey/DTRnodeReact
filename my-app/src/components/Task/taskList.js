@@ -4,7 +4,7 @@ const CatInputs = (props) => {
     props.taskList.map((val, idx) => {
       let projectName = `projectName-${idx}`, task = `task-${idx}`, taskNotes = `taskNotes-${idx}`, taskStatus = `taskStatus-${idx}`
       return (
-        <tr key={idx}>
+        <tr key={val.index}>
           <td>
             <input type="text" name="projectName" data-id={idx} id={projectName} className="form-control" />
           </td>
@@ -23,7 +23,8 @@ const CatInputs = (props) => {
             </select>
           </td>
           <td>
-            <input type="button" className="btn btn-danger" onClick={()=>props.onDelete(idx)} value="Delete" />
+            <button  className="btn btn-danger" onClick={(()=>props.delete(val))} ><i class="fa fa-minus" aria-hidden="true"></i></button>
+            {/* <input type="button" onClick={(()=>props.delete(val))} value="delete" className="btn btn-danger" /> */}
           </td>
         </tr >
       )
