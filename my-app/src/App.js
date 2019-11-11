@@ -9,6 +9,7 @@ import Register from "./components/Auth/Register";
 import GuestRoute from "./components/GuestRoute";
 import AuthRoute from "./components/AuthRoute";
 import Layout from "./components/Layout";
+import 'react-notifications/lib/notifications.css';
 
 function App() {
   return (

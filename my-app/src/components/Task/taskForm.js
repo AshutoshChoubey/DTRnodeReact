@@ -1,9 +1,10 @@
 import React from "react"
 import TaskList from "./taskList"
 import axios from 'axios';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 class Form extends React.Component {
     state = {
-        taskList: [{index:Math.random(), projectName: "", task: "", taskNotes: "", taskStatus: "" }],
+        taskList: [{ index: Math.random(), projectName: "", task: "", taskNotes: "", taskStatus: "" }],
         date: "",
         description: "",
     }
@@ -11,7 +12,6 @@ class Form extends React.Component {
     handleChange = (e) => {
         if (["projectName", "task", "taskNotes", "taskStatus"].includes(e.target.name)) {
             let taskList = [...this.state.taskList]
-            // taskList['id'] = this.nextUniqueId();
             taskList[e.target.dataset.id][e.target.name] = e.target.value;
         } else {
             this.setState({ [e.target.name]: e.target.value })
@@ -19,52 +19,32 @@ class Form extends React.Component {
     }
     addNewRow = (e) => {
         this.setState((prevState) => ({
-            taskList: [...prevState.taskList, {index:Math.random(), projectName: "", task: "", taskNotes: "", taskStatus: "" }],
+            taskList: [...prevState.taskList, { index: Math.random(), projectName: "", task: "", taskNotes: "", taskStatus: "" }],
         }));
-
-        //         let rows = this.state.taskList;
-        // rows.push({index: new Date().getTime()});
-        // this.setState({taskList:rows})
-
     }
-    handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(this.state);
-        // e.preventDefault(); 
-        // axios
-        // .post("http://localhost:9000/api/task", this.state)
-        // .then(result => {
-        //  console.log(result);
-        // })
-        // .catch(e => this.setState({ errors: e.response }));
-    }
+
     deteteRow = (index) => {
-        console.log(index);
-        // var array = [...this.state.taskList]
-        // array.splice(index, 1);
-        // this.setState({taskList:array});//https://stackoverflow.com/questions/54429133/why-react-list-slice-always-delete-the-last-row
-        //https://jsfiddle.net/w6cy0bx1/11/
-        // https://jsfiddle.net/xk4e1z2s/2/
-        //         this.setState({
-        //     taskList: this.state.taskList.filter((s, sindex) => index !== sindex),
-        //   });
-        //         console.log("deteteRow",index);
-
-        // console.log(this.nextUniqueId())
-        //const users = [...this.state.users];
+        this.setState({
+            taskList: this.state.taskList.filter((s, sindex) => index !== sindex),
+        });
         const taskList = Object.assign([], this.state.taskList);
         taskList.splice(index, 1);
         this.setState({ taskList: taskList });
     }
-    handleSubmit = (e) => { e.preventDefault(); 
-        console.log(JSON.stringify(this.state));
-        let data={formData:this.state,userData:localStorage.getItem('user')}
-            axios.defaults.headers.common["Authorization"] =localStorage.getItem('token');
-            axios.post("http://localhost:9000/api/task",data).then(res => {
-               console.log(res);
-            });
-     }
-    clickOnDelete(record){
+    handleSubmit = (e) => {
+        e.preventDefault();
+        let data = { formData: this.state, userData: localStorage.getItem('user') }
+        axios.defaults.headers.common["Authorization"] = localStorage.getItem('token');
+        axios.post("http://localhost:9000/api/task", data).then(res => {
+            if(res.data.success) NotificationManager.success(res.data.msg);
+        }).catch(error => {
+            if(error.response.status==400)
+            NotificationManager.error("Bad Request");
+            else NotificationManager.error("Something Went Wrong");
+            this.setState({ errors: error })
+        });
+    }
+    clickOnDelete(record) {
         this.setState({
             taskList: this.state.taskList.filter(r => r !== record)
         });
@@ -73,6 +53,7 @@ class Form extends React.Component {
         let { taskList } = this.state//let { notes, date, description, taskList } = this.state
         return (
             <div className="content">
+                <NotificationContainer/>
                 <form onSubmit={this.handleSubmit} onChange={this.handleChange} >
                     <div className="row" style={{ marginTop: 20 }}>
                         <div className="col-sm-1"></div>
