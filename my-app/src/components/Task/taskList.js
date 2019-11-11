@@ -22,6 +22,9 @@ const CatInputs = (props) => {
               <option value="Hold">Hold</option>
             </select>
           </td>
+          <td>
+            <input type="button" className="btn btn-danger" onClick={()=>props.onDelete(idx)} value="Delete" />
+          </td>
         </tr >
       )
     })

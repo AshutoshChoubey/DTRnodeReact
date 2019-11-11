@@ -1,26 +1,68 @@
 import React from "react"
 import TaskList from "./taskList"
+import axios from "axios"
+import UniqueID from 'react-html-id';
 class Form extends React.Component {
-    state = {
-        taskList: [{ projectName: "", task: "", taskNotes: "", taskStatus: "" }],
-        date: "",
-        description: "",
+    constructor() {
+        super();
+        UniqueID.enableUniqueIds(this);
+        this.state = {
+            taskList: [{ projectName: "", task: "", taskNotes: "", taskStatus: "" }],
+            date: "",
+            description: "",
+        }
     }
+
     handleChange = (e) => {
         if (["projectName", "task", "taskNotes", "taskStatus"].includes(e.target.name)) {
             let taskList = [...this.state.taskList]
+            // taskList['id'] = this.nextUniqueId();
             taskList[e.target.dataset.id][e.target.name] = e.target.value;
             // this.setState({ taskList }, () => console.log(this.state.taskList))
         } else {
-            this.setState({ [e.target.name]: e.target.value.toUpperCase() })
+            this.setState({ [e.target.name]: e.target.value })
         }
     }
     addCat = (e) => {
+        // rows.push({index: new Date().getTime()});
         this.setState((prevState) => ({
-            taskList: [...prevState.taskList, { projectName: "", task: "", taskNotes: "", taskStatus: "" }],
+            taskList: [...prevState.taskList, {  projectName: "", task: "", taskNotes: "", taskStatus: "" }],
         }));
+
+        //         let rows = this.state.taskList;
+        // rows.push({index: new Date().getTime()});
+        // this.setState({taskList:rows})
+
     }
-    handleSubmit = (e) => { e.preventDefault(); console.log(this.state) }
+    handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(this.state);
+        // e.preventDefault(); 
+        // axios
+        // .post("http://localhost:9000/api/task", this.state)
+        // .then(result => {
+        //  console.log(result);
+        // })
+        // .catch(e => this.setState({ errors: e.response }));
+    }
+    deteteRow = (index) => {
+        console.log(index);
+        // var array = [...this.state.taskList]
+        // array.splice(index, 1);
+        // this.setState({taskList:array});//https://stackoverflow.com/questions/54429133/why-react-list-slice-always-delete-the-last-row
+        //https://jsfiddle.net/w6cy0bx1/11/
+        // https://jsfiddle.net/xk4e1z2s/2/
+        //         this.setState({
+        //     taskList: this.state.taskList.filter((s, sindex) => index !== sindex),
+        //   });
+        //         console.log("deteteRow",index);
+
+        // console.log(this.nextUniqueId())
+        //const users = [...this.state.users];
+        const taskList = Object.assign([], this.state.taskList);
+        taskList.splice(index, 1);
+        this.setState({ taskList: taskList });
+    }
     render() {
         let { taskList } = this.state//let { notes, date, description, taskList } = this.state
         return (
@@ -56,7 +98,7 @@ class Form extends React.Component {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <TaskList taskList={taskList} />
+                                            <TaskList taskList={taskList} onDelete={this.deteteRow} />
                                         </tbody>
                                         <tfoot>
                                             <tr><td colSpan="4">

@@ -57,7 +57,9 @@ mongoose.connect(db, {
 // });
 // Bring in the Users route
 const users = require('./routes/api/users');
+const task = require('./routes/api/task');
 app.use('/api/users', users);
+app.use('/api/task', task);
 
 
 app.get('*', (req, res) => {

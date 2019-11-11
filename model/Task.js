@@ -11,7 +11,7 @@ const TaskSchema = new Schema({
     descripition: {
         type: String,
     },
-    taskList :[
+    taskList :[{
 	    projectName: {
 	        type: String,
 	    },
@@ -24,8 +24,8 @@ const TaskSchema = new Schema({
 	     taskStatus: {
 	        type: String,
 	        required: true
-	    }
-    ]
+	    }}
+    ],
     createdDate: {
         type: Date,
         default: Date.now
