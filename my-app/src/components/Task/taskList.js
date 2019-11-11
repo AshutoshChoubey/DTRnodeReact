@@ -23,8 +23,7 @@ const CatInputs = (props) => {
             </select>
           </td>
           <td>
-            <button  className="btn btn-danger" onClick={(()=>props.delete(val))} ><i class="fa fa-minus" aria-hidden="true"></i></button>
-            {/* <input type="button" onClick={(()=>props.delete(val))} value="delete" className="btn btn-danger" /> */}
+            <button  className="btn btn-danger" onClick={(()=>props.delete(val))} ><i className="fa fa-minus" aria-hidden="true"></i></button>
           </td>
         </tr >
       )
