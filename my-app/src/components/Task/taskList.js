@@ -6,13 +6,13 @@ const CatInputs = (props) => {
       return (
         <tr key={val.index}>
           <td>
-            <input type="text" name="projectName" data-id={idx} id={projectName} className="form-control" />
+            <input type="text" required name="projectName" data-id={idx} id={projectName} className="form-control" />
           </td>
           <td>
-            <input type="text" name="task" id={task} data-id={idx} className="form-control" />
+            <input type="text" required name="task" id={task} data-id={idx} className="form-control" />
           </td>
           <td>
-            <textarea name="taskNotes" id={taskNotes} data-id={idx} className="form-control"></textarea>
+            <textarea required name="taskNotes" id={taskNotes} data-id={idx} className="form-control"></textarea>
           </td>
           <td>
             <select name="taskStatus" id={taskStatus} data-id={idx} className="form-control" >

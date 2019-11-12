@@ -1,18 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-// import TaskForm from '../Task/taskForm';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import UserModal from './userModal';
+
 class Home extends Component {
-  constructor(props)
-  {
-    super(props);
-    this.state={
-      editUser:0
-    }
-  }
-  handleEvent=e=>{
-    this.setState({editUser:1})
-  }
   render() {
     if (this.props.loggedIn) {
       return (
@@ -21,7 +12,7 @@ class Home extends Component {
             <div className="card-body">
               <h5 className="card-title">WelCome {this.props.name}</h5>
               <p className="card-text">Email :{this.props.email}</p>
-              <button onClick={this.handleEvent} className="btn btn-primary ">Edit</button>
+              <UserModal />
             </div>
           </div>
         </div >

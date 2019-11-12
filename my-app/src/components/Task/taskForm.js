@@ -38,7 +38,7 @@ class Form extends React.Component {
         axios.post("http://localhost:9000/api/task", data).then(res => {
             if(res.data.success) NotificationManager.success(res.data.msg);
         }).catch(error => {
-            if(error.response.status==400)
+            if(error.response.status===400)
             NotificationManager.error("Bad Request");
             else NotificationManager.error("Something Went Wrong");
             this.setState({ errors: error })
@@ -65,13 +65,13 @@ class Form extends React.Component {
                                         <div className="col-sm-4">
                                             <div className="form-group">
                                                 <label>Date</label>
-                                                <input type="date" name="date" id="date" className="form-control" placeholder="Enter Date" />
+                                                <input type="date" required name="date" id="date" className="form-control" placeholder="Enter Date" />
                                             </div>
                                         </div>
                                         <div className="col-sm-4">
                                             <div className="form-group">
                                                 <label>Description</label>
-                                                <textarea name="description" id="description" className="form-control"></textarea>
+                                                <textarea name="description"  id="description" className="form-control"></textarea>
                                             </div>
                                         </div>
                                     </div>

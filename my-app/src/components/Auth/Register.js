@@ -57,20 +57,20 @@ class Register extends Component {
                                 <div className="card-body">
                                 <div className="form-group">
                                         <label >Name</label>
-                                        <input type="text" name="name" onChange={this.handleInput} className="form-control" placeholder="Enter email" />
+                                        <input type="text" required name="name" onChange={this.handleInput} className="form-control" placeholder="Enter email" />
                                     </div>
 
                                     <div className="form-group">
                                         <label >Email address</label>
-                                        <input type="email" name="email" onChange={this.handleInput} className="form-control" placeholder="Enter email" />
+                                        <input type="email" required name="email" onChange={this.handleInput} className="form-control" placeholder="Enter email" />
                                     </div>
                                     <div className="form-group">
                                         <label >Password</label>
-                                        <input type="password" name="password" onChange={this.handleInput} className="form-control" placeholder="Enter Password" />
+                                        <input type="password" required name="password" onChange={this.handleInput} className="form-control" placeholder="Enter Password" />
                                     </div>
                                     <div className="form-group">
                                         <label >Confirm Password</label>
-                                        <input type="password" name="password_confirmation" onChange={this.handleInput} className="form-control" placeholder="Enter Password" />
+                                        <input type="password" required name="password_confirmation" onChange={this.handleInput} className="form-control" placeholder="Enter Password" />
                                     </div>
                                 </div>
                                 <div className="card-footer text-center"> <button type="submit" className="btn btn-primary text-center">Register</button></div>
