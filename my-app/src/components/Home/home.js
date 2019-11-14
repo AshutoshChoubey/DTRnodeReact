@@ -10,8 +10,8 @@ class Home extends Component {
         <div className="container">
           <div className="card" >
             <div className="card-body">
-              <h5 className="card-title">WelCome {this.props.name}</h5>
-              <p className="card-text">Email :{this.props.email}</p>
+              <h5 className="card-title">WelCome {JSON.parse(localStorage.getItem('user')).name}</h5>
+              <p className="card-text">Email :{JSON.parse(localStorage.getItem('user')).email}</p>
               <UserModal />
             </div>
           </div>
