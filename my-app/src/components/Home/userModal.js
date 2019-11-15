@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import { connect } from "react-redux";
 import { NotificationContainer, NotificationManager } from 'react-notifications';
+import Toggle from 'react-toggle'
+import "react-toggle/style.css"
 
 class UserModal extends Component {
     constructor(props) {
@@ -19,6 +21,9 @@ class UserModal extends Component {
     handleInput = e => {
         e.preventDefault();
         this.setState({ [e.target.name]: e.target.value })
+    }
+    handleToggleInput=e=>{
+        this.setState({ changePassword: e.target.checked })
     }
     handleForm = event => {
         event.preventDefault();
@@ -39,7 +44,7 @@ class UserModal extends Component {
                 <NotificationContainer />
                 <button onClick={this.handleEvent} className="btn btn-primary" data-toggle="modal" data-target="#myModal" ><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button>
                 <div className="modal" id="myModal">
-                    <div className="modal-dialog">
+                    <div className="modal-dialog modal-lg">
                         <div className="modal-content">
                             <form onSubmit={this.handleForm}  >
                                 <div className="modal-header">
@@ -51,40 +56,49 @@ class UserModal extends Component {
                                     <div className="row">
                                         <div className="col-sm-6" >
                                             <div className="form-group">
+                                                <label >Name</label>
                                                 <input type="text" className="form-control" required placeholder="Name" name="name" onChange={this.handleInput} value={this.state.name} />
                                             </div>
                                         </div>
                                         <div className="col-sm-6" >
                                             <div className="form-group">
+                                                <label >Email</label>
                                                 <input type="email" className="form-control" name="email" value={this.state.email} onChange={this.handleInput} placeholder="Email" />
                                             </div>
                                         </div>
                                         <div className="col-sm-6" >
                                             <div className="form-group">
-                                                Change Password:
-                                                <label className="radio-inline"><input type="radio" name="changePassword" checked />Yes</label>
-                                                <label className="radio-inline"><input type="radio" name="changePassword" />No</label>
+                                                <label >Current Password</label>
+                                                <input type="password" className="form-control" required name="currentPassword" value={this.state.currentPassword} onChange={this.handleInput} placeholder="Current Password" />
+                                            </div>
+                                        </div>
+                                        <div className="col-sm-6" >
+                                            <div className="form-group">
+                                                <label htmlFor='changePassword'>Want To change Password?</label><br/>
+                                                <Toggle
+                                                    name="changePassword"
+                                                    id='changePassword'
+                                                    defaultChecked={this.state.changePassword}
+                                                    onChange={this.handleToggleInput} />
                                             </div>
                                         </div>
                                         {this.state.changePassword ? (
-                                           <React.Fragment>
+                                            <React.Fragment>
                                                 <div className="col-sm-6" >
                                                     <div className="form-group">
+                                                        <label >New Password</label>
                                                         <input type="password" className="form-control" name="password" value={this.state.password} onChange={this.handleInput} placeholder="New Password" />
                                                     </div>
                                                 </div>
                                                 <div className="col-sm-6" >
                                                     <div className="form-group">
+                                                        <label >Confirm Password</label>
                                                         <input type="password" className="form-control" name="password_confirmation" value={this.state.password_confirmation} onChange={this.handleInput} placeholder="Confirm New Password" />
                                                     </div>
                                                 </div>
-                                                </React.Fragment>
+                                            </React.Fragment>
                                         ) : null}
-                                        <div className="col-sm-6" >
-                                            <div className="form-group">
-                                                <input type="password" className="form-control" required name="currentPassword" value={this.state.currentPassword} onChange={this.handleInput} placeholder="Current Password" />
-                                            </div>
-                                        </div>
+
 
                                     </div>
                                 </div>

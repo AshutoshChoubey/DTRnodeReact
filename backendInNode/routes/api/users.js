@@ -136,50 +136,12 @@ router.put('/update', function (req, res) {
                         bcrypt.hash(req.body.password, salt, (err, hash) => {
                             if (err) throw err;
                             hasedPassword = hash;
-                            User.findOneAndUpdate({ _id: req.body._id }, { name: req.body.name, password: hasedPassword, updatedDate: new Date() }, { new: true }, function (err, updatedUser) {
-                                if (err) {
-                                    if (err.name === 'MongoError' && err.code === 11000) {
-                                        res.status(409).send(new MyError('Mongo Db Error ', [err.message]));
-                                    }
-
-                                    res.status(500).send(new MyError('Unknown Server Error', ['Unknow server error when updating User for user Name ' + req.body.name]));
-                                }
-                                if (!updatedUser) {
-                                    return res.status(404).json({
-                                        msg: "User Not Found.",
-                                        success: false
-                                    });
-                                }
-                                return res.status(200).json({
-                                    success: true,
-                                    msg: "User Successfully Updated",
-                                    updatedData: updatedUser
-                                });
-                            });
+                            findWithConditionAndUpdate({ _id: req.body._id }, { name: req.body.name, email: req.body.email, password: hasedPassword, updatedDate: new Date() });
                         });
                     });
                 }
-                else{
-                    User.findOneAndUpdate({ _id: req.body._id }, { name: req.body.name, updatedDate: new Date() }, { new: true }, function (err, updatedUser) {
-                        if (err) {
-                            if (err.name === 'MongoError' && err.code === 11000) {
-                                res.status(409).send(new MyError('Mongo Db Error ', [err.message]));
-                            }
-
-                            res.status(500).send(new MyError('Unknown Server Error', ['Unknow server error when updating User for user Name ' + req.body.name]));
-                        }
-                        if (!updatedUser) {
-                            return res.status(404).json({
-                                msg: "User Not Found.",
-                                success: false
-                            });
-                        }
-                        return res.status(200).json({
-                            success: true,
-                            msg: "User Successfully Updated",
-                            updatedData: updatedUser
-                        });
-                    });
+                else {
+                    findWithConditionAndUpdate({ _id: req.body._id }, { name: req.body.name, email: req.body.email, updatedDate: new Date() })
 
                 }
             } else {
@@ -191,4 +153,26 @@ router.put('/update', function (req, res) {
         })
     });
 })
+findWithConditionAndUpdate = (condition, dataForUpdate) => {
+    User.findOneAndUpdate(condition, dataForUpdate, { new: true }, function (err, updatedUser) {
+        if (err) {
+            if (err.name === 'MongoError' && err.code === 11000) {
+                res.status(409).send(new MyError('Mongo Db Error ', [err.message]));
+            }
+
+            res.status(500).send(new MyError('Unknown Server Error', ['Unknow server error when updating User']));
+        }
+        if (!updatedUser) {
+            return res.status(404).json({
+                msg: "User Not Found.",
+                success: false
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            msg: "User Successfully Updated",
+            updatedData: updatedUser
+        });
+    });
+}
 module.exports = router;
