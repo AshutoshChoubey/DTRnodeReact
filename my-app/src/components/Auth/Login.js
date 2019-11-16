@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import axios from 'axios';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -17,29 +18,14 @@ class Login extends Component {
         this.props.setLogin(JSON.stringify(result.data.user));
         this.props.history.push("/home");
       })
-      .catch(e => this.setState({ errors: e.response }));
-    // fetch('http://localhost:9000/api/users/login', {
-    //   method: 'POST',
-    //   body: JSON.stringify(data),
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   }
-    // })
-    //   .then(res => res.json())
-    //   .then(
-    //     (result) => {
-    //       localStorage.setItem("token", result.token);
-    //       localStorage.setItem("user", JSON.stringify(result.user));
-    //       this.props.setLogin(JSON.stringify(result.user));
-    //       this.props.history.push("/home");
-    //     },
-    //     (error) => {
-    //       console.log(error);
-    //     }
-    //   )
-    //   .catch(err => {
-    //     this.setState({ errors: err });
-    //   });
+      .catch(err => {
+        console.log(err.response);
+        if (err.response.status === 404)
+          NotificationManager.error(err.response.data.msg);
+        else
+          NotificationManager.error("Something Went Wrong");
+        this.setState({ errors: err.response })
+      });
   };
   handleInput = e => {
     e.preventDefault();
@@ -50,6 +36,7 @@ class Login extends Component {
   render() {
     return (
       <div className="content">
+        <NotificationContainer />
         <form onSubmit={this.handleForm}>
           <div className="row" style={{ marginTop: 20 }}>
             <div className="col-sm-2"></div>

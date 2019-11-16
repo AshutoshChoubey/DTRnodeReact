@@ -23,10 +23,15 @@ class UserModal extends Component {
         this.setState({ [e.target.name]: e.target.value })
     }
     handleToggleInput=e=>{
-        this.setState({ changePassword: e.target.checked })
+        this.setState({ changePassword: e.target.checked ,password:'',password_confirmation:''})
     }
     handleForm = event => {
         event.preventDefault();
+        if(this.state.currentPassword==='')
+        {
+            NotificationManager.warning("Please Enter Current Password");
+            return false;
+        }
         axios
             .put("http://localhost:9000/api/users/update", this.state)
             .then(result => {
@@ -34,8 +39,11 @@ class UserModal extends Component {
                 if (result.data.success) NotificationManager.success(result.data.msg);
             })
             .catch(erro => {
-                NotificationManager.error("Something Went Wrong");
                 this.setState({ errors: erro })
+                if(erro.response.status===401)
+                    NotificationManager.error(erro.response.data.msg);
+                else    
+                NotificationManager.error("Something Went Wrong");
             });
     }
     render() {
@@ -57,7 +65,7 @@ class UserModal extends Component {
                                         <div className="col-sm-6" >
                                             <div className="form-group">
                                                 <label >Name</label>
-                                                <input type="text" className="form-control" required placeholder="Name" name="name" onChange={this.handleInput} value={this.state.name} />
+                                                <input type="text" className="form-control"  placeholder="Name" name="name" onChange={this.handleInput} value={this.state.name} />
                                             </div>
                                         </div>
                                         <div className="col-sm-6" >
