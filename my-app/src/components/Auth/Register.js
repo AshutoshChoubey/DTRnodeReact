@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -48,6 +49,7 @@ class Register extends Component {
   render() {
     return (
       <div className="content">
+        <NotificationContainer />
                 <form onSubmit={this.handleForm}>
                     <div className="row" style={{ marginTop: 20 }}>
                         <div className="col-sm-2"></div>

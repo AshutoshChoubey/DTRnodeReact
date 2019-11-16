@@ -16,10 +16,10 @@ class Login extends Component {
         localStorage.setItem("token", result.data.token);
         localStorage.setItem("user", JSON.stringify(result.data.user));
         this.props.setLogin(JSON.stringify(result.data.user));
+        NotificationManager.success(result.data.msg);
         this.props.history.push("/home");
       })
       .catch(err => {
-        console.log(err.response);
         if (err.response.status === 404)
           NotificationManager.error(err.response.data.msg);
         else
