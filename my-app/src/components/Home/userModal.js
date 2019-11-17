@@ -32,6 +32,15 @@ class UserModal extends Component {
             NotificationManager.warning("Please Enter Current Password");
             return false;
         }
+        if(this.state.changePassword && (this.state.password==='' || this.state.password_confirmation===''))
+        {
+            NotificationManager.warning("Please Enter Password and Confirm Password");
+            return false;
+        }else if(this.state.changePassword && (this.state.password!==this.state.password_confirmation))
+        {
+            NotificationManager.warning("Your Password Not Matched ! Please Check your pasword and confirm password");
+            return false;
+        }
         axios
             .put("http://localhost:9000/api/users/update", this.state)
             .then(result => {
@@ -40,9 +49,9 @@ class UserModal extends Component {
             })
             .catch(erro => {
                 this.setState({ errors: erro })
-                if(erro.response.status===401)
+                if(erro.response && erro.response.status===401)
                     NotificationManager.error(erro.response.data.msg);
-                else    
+                else
                 NotificationManager.error("Something Went Wrong");
             });
     }

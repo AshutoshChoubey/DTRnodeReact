@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { NotificationContainer, NotificationManager } from 'react-notifications';
+import axios from 'axios';
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -13,33 +14,57 @@ class Register extends Component {
   }
   handleForm = e => {
     e.preventDefault();
+    if(this.state.password==='' || this.state.password_confirmation==='' || this.state.email==='' || this.state.name==='')
+    {
+        NotificationManager.warning("Please Enter Name,Email Password And Confirm Password");
+        return false;
+    }
+    else if(this.state.password!==this.state.password_confirmation)
+    {
+        NotificationManager.warning("Your Password Not Matched ! Please Check your pasword and confirm password");
+        return false;
+    }
     const data = {
       name: this.state.name,
       email: this.state.email,
       password: this.state.password,
       password_confirmation: this.state.password_confirmation
     };
-    fetch('http://localhost:9000/api/users/register', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    axios
+    .post("http://localhost:9000/api/users/register", data)
+    .then(result => {
+      NotificationManager.success(result.data.msg);
+      this.props.history.push("/login");
     })
-      .then(res => res.json())
-      .then(
-        (result) => {
-          console.log(result);
-          this.props.history.push("/login");
-        },
-        (error) => {
-          console.log(error);
-        }
-      )
-      .catch(err => {
-        this.setState({ errors: err });
-      });
-  };
+    .catch(err => {
+      if (err.response && err.response.status === 400)
+        NotificationManager.error(err.response.data.msg);
+      else
+        NotificationManager.error("Something Went Wrong");
+      this.setState({ errors: err.response })
+    });
+};
+    // fetch('http://localhost:9000/api/users/register', {
+    //   method: 'POST',
+    //   body: JSON.stringify(data),
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   }
+    // })
+    //   .then(res => res.json())
+    //   .then(
+    //     (result) => {
+    //       NotificationManager.success(result.msg)
+    //     },
+    //     (error) => {
+    //       NotificationManager.error(error);
+    //     }
+    //   )
+    //   .catch(err => {
+    //     NotificationManager.error(err);
+    //     this.setState({ errors: err });
+    //   });
+  //};
   handleInput = e => {
     e.preventDefault();
     const name = e.target.name;

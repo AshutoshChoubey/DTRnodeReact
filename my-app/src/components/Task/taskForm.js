@@ -27,9 +27,9 @@ class Form extends React.Component {
         this.setState({
             taskList: this.state.taskList.filter((s, sindex) => index !== sindex),
         });
-        const taskList = Object.assign([], this.state.taskList);
-        taskList.splice(index, 1);
-        this.setState({ taskList: taskList });
+        // const taskList1 = [...this.state.taskList];
+        // taskList1.splice(index, 1);
+        // this.setState({ taskList: taskList1 });
     }
     handleSubmit = (e) => {
         e.preventDefault();
@@ -38,7 +38,7 @@ class Form extends React.Component {
         axios.post("http://localhost:9000/api/task", data).then(res => {
             if(res.data.success) NotificationManager.success(res.data.msg);
         }).catch(error => {
-            if(error.response.status===400)
+            if(error.response.status && error.response.status===400)
             NotificationManager.error("Bad Request");
             else NotificationManager.error("Something Went Wrong");
             this.setState({ errors: error })
@@ -85,7 +85,7 @@ class Form extends React.Component {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <TaskList delete={this.clickOnDelete.bind(this)} taskList={taskList} />
+                                            <TaskList add={this.addNewRow} delete={this.clickOnDelete.bind(this)} taskList={taskList} />
                                         </tbody>
                                         <tfoot>
                                             <tr><td colSpan="4">

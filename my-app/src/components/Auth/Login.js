@@ -9,6 +9,11 @@ class Login extends Component {
   }
   handleForm = e => {
     e.preventDefault();
+    if(this.state.email==='' || this.state.password==='')
+    {
+      NotificationManager.warning("Email And Password Required");
+      return false;
+    }
     const data = { email: this.state.email, password: this.state.password };
     axios
       .post("http://localhost:9000/api/users/login", data)
@@ -20,7 +25,7 @@ class Login extends Component {
         this.props.history.push("/home");
       })
       .catch(err => {
-        if (err.response.status === 404)
+        if (err.response && err.response.status === 404)
           NotificationManager.error(err.response.data.msg);
         else
           NotificationManager.error("Something Went Wrong");
@@ -47,11 +52,11 @@ class Login extends Component {
 
                   <div className="form-group">
                     <label >Email address</label>
-                    <input type="email" name="email" required onChange={this.handleInput} className="form-control" placeholder="Enter email" />
+                    <input type="email" name="email"  onChange={this.handleInput} className="form-control" placeholder="Enter email" />
                   </div>
                   <div className="form-group">
                     <label >Password</label>
-                    <input type="password" required name="password" onChange={this.handleInput} className="form-control" placeholder="Enter Password" />
+                    <input type="password"  name="password" onChange={this.handleInput} className="form-control" placeholder="Enter Password" />
                   </div>
                 </div>
                 <div className="card-footer text-center"> <button type="submit" className="btn btn-primary text-center">Submit</button></div>
