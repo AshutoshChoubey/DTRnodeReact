@@ -68,7 +68,6 @@ router.post('/login', (req, res) => {
     }).then(user => {
         if (!user) {
             return res.status(404).json({
-                token: `Bearer ${token}`,
                 user: user,
                 msg: "Username is not found.",
                 success: false

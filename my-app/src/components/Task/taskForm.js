@@ -33,6 +33,19 @@ class Form extends React.Component {
     }
     handleSubmit = (e) => {
         e.preventDefault();
+        if(this.state.date==='' || this.state.description==='')
+        {
+            NotificationManager.warning("Please Fill up Required Field . Please check Task and Date Field");
+            return false;
+        }
+        for(var i=0;i<this.state.taskList.length;i++)
+        {
+                if(this.state.taskList[i].projectName==='' || this.state.taskList[i].task==='')
+                {
+                    NotificationManager.warning("Please Fill up Required Field.Please Check Project name And Task Field");
+                    return false;
+                }
+        }
         let data = { formData: this.state, userData: localStorage.getItem('user') }
         axios.defaults.headers.common["Authorization"] = localStorage.getItem('token');
         axios.post("http://localhost:9000/api/task", data).then(res => {
@@ -63,14 +76,14 @@ class Form extends React.Component {
                                 <div className="card-body">
                                     <div className="row">
                                         <div className="col-sm-4">
-                                            <div className="form-group">
-                                                <label>Date</label>
-                                                <input type="date" required name="date" id="date" className="form-control" placeholder="Enter Date" />
+                                            <div className="form-group ">
+                                                <label className="required">Date</label>
+                                                <input type="date"  name="date" id="date" className="form-control" placeholder="Enter Date" />
                                             </div>
                                         </div>
                                         <div className="col-sm-4">
-                                            <div className="form-group">
-                                                <label>Description</label>
+                                            <div className="form-group ">
+                                                <label className="required">Description</label>
                                                 <textarea name="description"  id="description" className="form-control"></textarea>
                                             </div>
                                         </div>
@@ -78,8 +91,8 @@ class Form extends React.Component {
                                     <table className="table">
                                         <thead>
                                             <tr>
-                                                <th>Project Name</th>
-                                                <th>Task</th>
+                                                <th className="required" >Project Name</th>
+                                                <th className="required" >Task</th>
                                                 <th>Notes</th>
                                                 <th>Status</th>
                                             </tr>

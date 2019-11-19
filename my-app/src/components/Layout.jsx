@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import logo from "../logo.jpeg";
+import logo from "../logo.png";
 function Layout(props) {
 
   const handleLogout = e => {
@@ -58,6 +58,9 @@ function Layout(props) {
                   </li>
                   <li className={"nav-item " + (pathname === '/register' ? 'active' : '')}>
                     <NavLink isActive={checkActive} to="/register" className="nav-link">Register</NavLink>
+                  </li>
+                  <li className={"nav-item " + (pathname === '/forget-password' ? 'active' : '')}>
+                    <NavLink isActive={checkActive} to="/forget-password" className="nav-link">Forget Password</NavLink>
                   </li>
                 </ul>
               </Fragment>

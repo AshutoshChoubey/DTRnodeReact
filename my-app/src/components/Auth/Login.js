@@ -9,8 +9,7 @@ class Login extends Component {
   }
   handleForm = e => {
     e.preventDefault();
-    if(this.state.email==='' || this.state.password==='')
-    {
+    if (this.state.email === '' || this.state.password === '') {
       NotificationManager.warning("Email And Password Required");
       return false;
     }
@@ -49,14 +48,13 @@ class Login extends Component {
               <div className="card">
                 <div className="card-header text-center">Login</div>
                 <div className="card-body">
-
                   <div className="form-group">
                     <label >Email address</label>
-                    <input type="email" name="email"  onChange={this.handleInput} className="form-control" placeholder="Enter email" />
+                    <input type="email" name="email" onChange={this.handleInput} className="form-control" placeholder="Enter email" />
                   </div>
                   <div className="form-group">
                     <label >Password</label>
-                    <input type="password"  name="password" onChange={this.handleInput} className="form-control" placeholder="Enter Password" />
+                    <input type="password" name="password" onChange={this.handleInput} className="form-control" placeholder="Enter Password" />
                   </div>
                 </div>
                 <div className="card-footer text-center"> <button type="submit" className="btn btn-primary text-center">Submit</button></div>
@@ -64,7 +62,6 @@ class Login extends Component {
             </div>
             <div className="col-sm-2"></div>
           </div>
-
         </form>
       </div>
     );
