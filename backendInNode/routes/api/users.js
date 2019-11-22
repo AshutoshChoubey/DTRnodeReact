@@ -115,6 +115,14 @@ router.get('/profile', passport.authenticate('jwt', {
         user: req.user
     });
 });
+router.get('/reset',function(req, res){
+    return res.status(200).json({
+        success: true,
+        msg: "Listed",
+        userlist: req.body
+    });
+});
+
 
 router.get('/userlist', function (req, res) {
     User.find(function (err, User) {
