@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const key = require('../../config/keys').secret;
 const User = require('../../model/User');
+var nodemailer = require('nodemailer');
 
 /**
  * @route POST api/users/register
@@ -115,7 +116,45 @@ router.get('/profile', passport.authenticate('jwt', {
         user: req.user
     });
 });
-router.get('/reset',function(req, res){
+router.post('/reset', function (req, res) {
+    User.findOne({ email: req.body.email }, function (error, userData) {
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',//smtp.gmail.com  //in place of service use host...
+
+            auth: {
+                user: 'ashutosh.choubey@codeclouds.in',
+                pass: 'ashu@q@w3e4r%'
+            }
+
+        });
+        var currentDateTime = new Date();
+        var mailOptions = {
+            from: 'ashutosh.choubey@codeclouds.in',
+            to: req.body.email,
+            subject: 'Password Reset',
+            // text: 'That was easy!',
+            html: `<h1>Welcome To Daily Task Report ! </h1><p>\
+            <h3>Hello ${userData.name}</h3>\
+            If You are requested to reset your password then click on below link<br/>
+            <a href="localhost:3000/change-password/${currentDateTime}">Click On This Link</a>
+            </p>`
+        };
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+                User.update({email: userData.email}, {
+                    token: currentDateTime, 
+                    password: newPassword
+                }, function(err, affected, resp) {
+                   console.log(resp);
+                })
+            }
+        });
+    })
+
     return res.status(200).json({
         success: true,
         msg: "Listed",

@@ -21,6 +21,10 @@ const UserSchema = new Schema({
         type:Boolean,
         default:1
     },
+    token:{
+        type:String,
+        default:''
+    },
     createdDate: {
         type: Date,
         default: Date.now
