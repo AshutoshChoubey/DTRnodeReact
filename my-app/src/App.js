@@ -10,6 +10,7 @@ import GuestRoute from "./components/GuestRoute";
 import AuthRoute from "./components/AuthRoute";
 import Layout from "./components/Layout";
 import ForgetPassword from './components/Auth/forgetpassword';
+import ResetPassword from './components/Auth/resetPassword';
 import 'react-notifications/lib/notifications.css';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <AuthRoute path="/task" component={TaskForm} />
           <AuthRoute path="/taskList" component={TaskList} />
           <GuestRoute path="/forget-password" component={ForgetPassword} />
+          <GuestRoute path="/change-password/:slug" component={ResetPassword} />
           <AuthRoute path="/home" component={Home} />
         </div>
         <Route path="/" exact component={Home} />

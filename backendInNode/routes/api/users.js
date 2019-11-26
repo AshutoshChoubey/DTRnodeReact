@@ -133,11 +133,11 @@ router.post('/reset', function (req, res) {
             to: req.body.email,
             subject: 'Password Reset',
             // text: 'That was easy!',
-            html: `<h1>Welcome To Daily Task Report ! </h1><p>\
-            <h3>Hello ${userData.name}</h3>\
-            If You are requested to reset your password then click on below link<br/>
-            <a href="localhost:3000/change-password/${currentDateTime}">Click On This Link</a>
-            </p>`
+            html: "<h1>Welcome To Daily Task Report ! </h1><p>\
+            <h3>Hello "+userData.name+"</h3>\
+            If You are requested to reset your password then click on below link<br/>\
+            <a href='http://localhost:3000/change-password/"+currentDateTime+"'>Click On This Link</a>\
+            </p>"
         };
 
         transporter.sendMail(mailOptions, function (error, info) {
@@ -147,16 +147,19 @@ router.post('/reset', function (req, res) {
                 console.log('Email sent: ' + info.response);
                 User.update({email: userData.email}, {
                     token: currentDateTime, 
-                    password: newPassword
-                }, function(err, affected, resp) {
-                   console.log(resp);
+                    
+                },  {multi:true},function(err, affected, resp) {
+                    return res.status(200).json({
+                        success: false,
+                        msg: "Listed",
+                        userlist: resp
+                    });
                 })
             }
         });
     })
-
     return res.status(200).json({
-        success: true,
+        success: false,
         msg: "Listed",
         userlist: req.body
     });
