@@ -26,20 +26,14 @@ export default class forgetpassword extends Component {
         axios
             .post("http://localhost:9000/api/users/reset", data)
             .then(result => {
-                console.log(result);
-                //   localStorage.setItem("token", result.data.token);
-                //   localStorage.setItem("user", JSON.stringify(result.data.user));
-                //   this.props.setLogin(JSON.stringify(result.data.user));
-                //   NotificationManager.success(result.data.msg);
-                //   this.props.history.push("/home");
+                NotificationManager.success("Password Reset link sent to yout email .Please check the your email.Link Will be Valid For 30 min");
             })
             .catch(err => {
-                console.log(err.response);
-                //   if (err.response && err.response.status === 404)
-                //     NotificationManager.error(err.response.data.msg);
-                //   else
-                //     NotificationManager.error("Something Went Wrong");
-                //   this.setState({ errors: err.response })
+                  if (err.response && err.response.status === 404)
+                    NotificationManager.error(err.response.data.msg);
+                  else
+                    NotificationManager.error("Something Went Wrong");
+                  this.setState({ errors: err.response })
             });
 
     }

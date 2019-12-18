@@ -136,7 +136,7 @@ router.post('/reset', function (req, res) {
             html: "<h1>Welcome To Daily Task Report ! </h1><p>\
             <h3>Hello "+userData.name+"</h3>\
             If You are requested to reset your password then click on below link<br/>\
-            <a href='http://localhost:3000/change-password/"+currentDateTime+"'>Click On This Link</a>\
+            <a href='http://localhost:3000/change-password/"+currentDateTime+"+++"+userData.email+"'>Click On This Link</a>\
             </p>"
         };
 
@@ -145,7 +145,7 @@ router.post('/reset', function (req, res) {
                 console.log(error);
             } else {
                 console.log('Email sent: ' + info.response);
-                User.update({email: userData.email}, {
+                User.updateOne({email: userData.email}, {
                     token: currentDateTime, 
                     
                 },  {multi:true},function(err, affected, resp) {
@@ -158,11 +158,6 @@ router.post('/reset', function (req, res) {
             }
         });
     })
-    return res.status(200).json({
-        success: false,
-        msg: "Listed",
-        userlist: req.body
-    });
 });
 
 
