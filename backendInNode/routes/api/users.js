@@ -119,17 +119,23 @@ router.get('/profile', passport.authenticate('jwt', {
 router.post('/reset', function (req, res) {
     User.findOne({ email: req.body.email }, function (error, userData) {
         var transporter = nodemailer.createTransport({
-            service: 'gmail',//smtp.gmail.com  //in place of service use host...
+            // service: 'gmail',//smtp.gmail.com  //in place of service use host...
 
+            // auth: {
+            //     user: 'ashutosh.choubey@codeclouds.in',
+            //     pass: 'ashu@q@w3e4r%'
+            // }
+            host: "smtp.mailtrap.io",
+            port: 2525,
             auth: {
-                user: 'ashutosh.choubey@codeclouds.in',
-                pass: 'ashu@q@w3e4r%'
+                user: "b3b235f452f137",
+                pass: "4070626b73b159"
             }
 
         });
         var currentDateTime = new Date();
         var mailOptions = {
-            from: 'ashutosh.choubey@codeclouds.in',
+            from: 'ashuashutoshchoubey@gmail.com',
             to: req.body.email,
             subject: 'Password Reset',
             // text: 'That was easy!',
@@ -151,7 +157,7 @@ router.post('/reset', function (req, res) {
                 },  {multi:true},function(err, affected, resp) {
                     return res.status(200).json({
                         success: false,
-                        msg: "Listed",
+                        msg: info.response,
                         userlist: resp
                     });
                 })
@@ -211,10 +217,10 @@ router.put('/update', function (req, res) {
                     User.findOneAndUpdate(condition, dataForUpdate, { new: true }, function (err, updatedUser) {
                         if (err) {
                             if (err.name === 'MongoError' && err.code === 11000) {
-                                res.status(409).send(new MyError('Mongo Db Error ', [err.message]));
+                              return  res.status(409).send(new MyError('Mongo Db Error ', [err.message]));
                             }
 
-                            res.status(500).send(new MyError('Unknown Server Error', ['Unknow server error when updating User']));
+                           return res.status(500).send(new MyError('Unknown Server Error', ['Unknow server error when updating User']));
                         }
                         if (!updatedUser) {
                             return res.status(404).json({
@@ -237,5 +243,53 @@ router.put('/update', function (req, res) {
             }
         })
     });
+})
+router.post('/updatePassword',function(req, res){
+    User.findOne({ email: req.body.email }, function (errorFind, userData) {
+        if(userData.token==req.body.linkDate && req.body.password==req.body.confirm_password)
+        {
+            bcrypt.genSalt(10, (errB, salt) => {
+                bcrypt.hash(req.body.password, salt, (err, hash) => {
+                    if (err) throw err;
+                    let newPassword = hash;
+                    let condition = { _id: userData._id };
+                    let dataForUpdate = { password: newPassword,updatedDate: new Date() };
+                    User.findOneAndUpdate(condition, dataForUpdate, { new: true }, function (error, updatedUser) {
+                        if (error) {
+                            if (err.name === 'MongoError' && error.code === 11000) {
+                              return res.status(500).json({msg:'Mongo Db Error', error:error.message});
+                            }else{
+                                return res.status(500).json({msg:'Unknown Server Error', error:'Unknow server error when updating User'});
+                            }
+                        }
+                        else{
+                                if (!updatedUser) {
+                                    return res.status(404).json({
+                                        msg: "User Not Found.",
+                                        success: false
+                                    });
+                                }else{
+                                return res.status(200).json({
+                                    success: true,
+                                    msg: "Your password are Successfully Updated",
+                                    updatedData: updatedUser
+                                });
+                            }
+                        }
+                    });
+                });
+            });
+           
+        }
+        if (errorFind)
+        {
+                return res.status(401).json({
+                msg: "Something Went Wrong",
+                success: false
+            });
+        }
+    }
+    );
+   
 })
 module.exports = router;

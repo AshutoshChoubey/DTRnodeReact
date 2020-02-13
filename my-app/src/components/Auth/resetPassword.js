@@ -5,7 +5,7 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 export default class resetPassword extends Component {
     constructor(props) {
         super(props);
-        this.state = { password: "",confirm_password: "", errors: {} };
+        this.state = { linkDate:"",email:"",password: "",confirm_password: "", errors: {} };
     }
     componentDidMount() {
         let slugParam = this.props.match.params.slug;
@@ -14,10 +14,11 @@ export default class resetPassword extends Component {
         let email=splitSlug[1];
         console.log(reqDate);
         console.log(email);
+        this.setState({email:email,linkDate:reqDate});
         let date1 = new Date(reqDate);
         let currentDate = new Date();
         let differenceinMS = currentDate - date1
-        if (differenceinMS > 1800000) {
+        if (differenceinMS > 3600000) {
             NotificationManager.error("Link Not Valid link will be valid for 15 min.Please sent the reset link Again");
             this.props.history.push("/login");
         }
@@ -34,11 +35,12 @@ export default class resetPassword extends Component {
             NotificationManager.warning("Email is Required");
             return false;
         }
-        const data = { email: this.state.email };
+        // const data = { email: this.state.email, };
+        // console.log(data)
         axios
-            .post("http://localhost:9000/api/users/reset", data)
+            .post("http://localhost:9000/api/users/updatePassword", this.state)
             .then(result => {
-                NotificationManager.error("Password Reset link sent to yout email .Please check the your email.");
+                NotificationManager.success(result.data.msg);
             })
             .catch(err => {
                 if (err.response && err.response.status === 404)
