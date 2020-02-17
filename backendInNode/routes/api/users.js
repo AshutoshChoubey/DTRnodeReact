@@ -279,7 +279,6 @@ router.post('/updatePassword',function(req, res){
                     });
                 });
             });
-           
         }
         if (errorFind)
         {

@@ -18,7 +18,6 @@ router.post('/task', (req, res) => {
 					taskNotes: taskList.taskNotes,
 					taskStatus: taskList.taskStatus
 				});
-
 				taskListObj.save((error, savedTask) => {
 					if (err) {
 						taskObj.deleteOne({ _id: task._id }, function (err) {
@@ -38,5 +37,30 @@ router.post('/task', (req, res) => {
 			});
 		}
 	});
+});
+router.get('/task',(req,res)=>{
+	Task.find().populate('userId').exec(function (err, tasks) {
+		if (err) return console.error(err);
+        return res.status(200).json({
+            success: true,
+            msg: "Task Listed",
+			tasks: tasks,
+        });
+    });
+});
+router.get('/task-detail/:id',(req,res)=>{
+	Task.findById(req.params.id).populate('userId').exec(function (err, tasks) {
+		if (err) return console.error(err);
+		TaskList.find({taskId:tasks._id}).exec(function(error,taskDetail){
+			if (error) return console.error(error);
+			return res.status(200).json({
+				success: true,
+				msg: "Task details",
+				tasks: tasks,
+				taskDetails: taskDetail,
+			});
+
+		});
+    });
 });
 module.exports = router;

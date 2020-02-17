@@ -13,7 +13,6 @@ let loginStatus=()=>{
 }
 let loginDetail=()=>{
   return localStorage.getItem('user')?localStorage.getItem('user'):null;
-   
 }
 const initialStates = {
   auth: {

@@ -2,21 +2,23 @@ import React from 'react';
 import axios from 'axios' ;
 import Moment from 'react-moment';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
-import { Link } from 'react-router-dom';
-export default class TaskList extends React.Component {
+export default class TaskDetail extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-            taskList:[],
+            task:{},
+            taskDetail:[],
             error:{}
       }
     }
     componentDidMount()
     {
+        let urlId = this.props.match.params.id;
         axios.defaults.headers.common["Authorization"] = localStorage.getItem('token');
-        axios.get("http://localhost:9000/api/task").then(res => {
+        axios.get("http://localhost:9000/api/task-detail/"+urlId).then(res => {
             if(res.data.success)
-                this.setState({taskList:res.data.tasks});
+                this.setState({taskDetail:res.data.taskDetails,task:res.data.tasks});
+                console.log(this.state.task.userId.name)
         }).catch(error => {
             if(error.response.status && error.response.status===400)
             NotificationManager.error("Bad Request");
@@ -39,23 +41,29 @@ export default class TaskList extends React.Component {
                                     <table className="table">
                                         <thead>
                                             <tr>
-                                                <th>User Name</th>
-                                                <th>Email Id</th>
-                                                <th>Date</th>
-                                                <th>Description</th>
-                                                <th>Action</th>
+                                                <th >Name : {this.state.task.userId.name!='undefined' ? this.state.task.userId.name : ''}</th>
+                                                <th colSpan="2">Email: {}</th>
+                                                <th>Date : {}</th>
+                                            </tr>
+                                            <tr>
+                                                <th colSpan="5">Description: </th>
+                                            </tr>
+                                            <tr>
+                                                <th>Project Name</th>
+                                                <th>Task</th>
+                                                <th>Task Notes</th>
+                                                <th>Task Status</th>
+                                                {/* <th>Date</th> */}
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {this.state.taskList.map((data, idx)=>
+                                            {this.state.taskDetail.map((data, idx)=>
                                             <tr key={data._id} >
-                                                <td>{data.userId.name}</td>
-                                                <td>{data.userId.email}</td>
-                                                <td><Moment format="YYYY/MM/DD">{data.date}</Moment></td>
-                                                <td>{data.descripition}</td>
-                                                <td>
-                                                    <Link className="btn btn-primary" to={"/task-detail/"+data._id}><i className="fa fa-eye" aria-hidden="true"></i></Link>
-                                                </td>
+                                                <td>{data.projectName}</td>
+                                                <td>{data.task}</td>
+                                                <td>{data.taskNotes}</td>
+                                                <td>{data.taskStatus}</td>
+                                                {/* <td><Moment format="YYYY/MM/DD">{data.createdDate}</Moment></td> */}
                                             </tr>
                                             )}
                                         </tbody>

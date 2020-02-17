@@ -4,6 +4,7 @@ import Login from "./components/Auth/Login";
 import Home from "./components/Home/home";
 // import Reminder from "./components/Reminder/reminder";
 import TaskList from "./components/TaskList/taskList";
+import TaskDetail from "./components/TaskList/taskDetail";
 import TaskForm from './components/Task/taskForm';
 import Register from "./components/Auth/Register";
 import GuestRoute from "./components/GuestRoute";
@@ -22,6 +23,7 @@ function App() {
           <GuestRoute path="/register" component={Register} />
           <AuthRoute path="/task" component={TaskForm} />
           <AuthRoute path="/taskList" component={TaskList} />
+          <AuthRoute path="/task-detail/:id" component={TaskDetail} />
           <GuestRoute path="/forget-password" component={ForgetPassword} />
           <GuestRoute path="/change-password/:slug" component={ResetPassword} />
           <AuthRoute path="/home" component={Home} />

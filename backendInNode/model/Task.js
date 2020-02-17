@@ -3,7 +3,7 @@ const mongoose=require('mongoose');
 const Schema=mongoose.Schema;
 // Create the User Schema
 const TaskSchema = new Schema({
-    userId:  { type: Schema.Types.ObjectId, ref: 'user', required: true },
+    userId:  { type: Schema.Types.ObjectId, ref: 'users', required: true },
     date: {
         type: Date,
         required: true,
