@@ -8,7 +8,7 @@ class Form extends React.Component {
         date: "",
         description: "",
     }
-
+  
     handleChange = (e) => {
         if (["projectName", "task", "taskNotes", "taskStatus"].includes(e.target.name)) {
             let taskList = [...this.state.taskList]
@@ -17,11 +17,12 @@ class Form extends React.Component {
             this.setState({ [e.target.name]: e.target.value })
         }
     }
-    addNewRow = (e) => {
+    addNewRow = () => {
         this.setState((prevState) => ({
             taskList: [...prevState.taskList, { index: Math.random(), projectName: "", task: "", taskNotes: "", taskStatus: "" }],
         }));
     }
+
 
     deteteRow = (index) => {
         this.setState({

@@ -1,7 +1,7 @@
 
 if (process.env.NODE_ENV === 'production') {
     module.exports = {
-        mongoURI: "mongodb://nandymandy123:nandymandy123@ds129906.mlab.com:29906/mevn_auth",
+        mongoURI: "mongodb://wg:wg@dfghj:29906/mern",
         secret: 'yoursecret'
     };
 } else {

@@ -80,7 +80,7 @@ class UserModal extends Component {
                                         <div className="col-sm-6" >
                                             <div className="form-group">
                                                 <label >Email</label>
-                                                <input type="email" className="form-control" name="email" value={this.state.email} onChange={this.handleInput} placeholder="Email" />
+                                                <input type="email" className="form-control" name="email1" value={this.state.email} onChange={this.handleInput} placeholder="Email" />
                                             </div>
                                         </div>
                                         <div className="col-sm-6" >

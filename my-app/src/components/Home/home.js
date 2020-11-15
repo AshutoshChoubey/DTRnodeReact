@@ -4,14 +4,19 @@ import { Link } from 'react-router-dom';
 import UserModal from './userModal';
 
 class Home extends Component {
+  constructor(props)
+  {
+    super(props)
+   console.log(props)
+  }
   render() {
     if (this.props.loggedIn) {
       return (
         <div className="container">
           <div className="card" >
             <div className="card-body">
-              <h5 className="card-title">WelCome {JSON.parse(localStorage.getItem('user')).name}</h5>
-              <p className="card-text">Email :{JSON.parse(localStorage.getItem('user')).email}</p>
+              <h5 className="card-title">WelCome {this.props.name}</h5>
+              <p className="card-text">Email :{this.props.email}</p>
               <UserModal />
             </div>
           </div>

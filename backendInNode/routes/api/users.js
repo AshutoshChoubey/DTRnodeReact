@@ -118,13 +118,17 @@ router.get('/profile', passport.authenticate('jwt', {
 });
 router.post('/reset', function (req, res) {
     User.findOne({ email: req.body.email }, function (error, userData) {
+        if(userData==null)
+        {
+            return res.status(404).json({
+                success: false,
+                msg: "Email is not register",
+            });
+        }
         var transporter = nodemailer.createTransport({
             // service: 'gmail',//smtp.gmail.com  //in place of service use host...
 
-            // auth: {
-            //     user: 'ashutosh.choubey@codeclouds.in',
-            //     pass: 'ashu@q@w3e4r%'
-            // }
+           
             host: "smtp.mailtrap.io",
             port: 2525,
             auth: {
@@ -135,7 +139,7 @@ router.post('/reset', function (req, res) {
         });
         var currentDateTime = new Date();
         var mailOptions = {
-            from: 'ashuashutoshchoubey@gmail.com',
+            from: 'worldgyan@gmail.com',
             to: req.body.email,
             subject: 'Password Reset',
             // text: 'That was easy!',
