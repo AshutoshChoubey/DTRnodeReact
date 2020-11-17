@@ -19,11 +19,7 @@ This body-parser module parses the JSON, buffer, string and URL encoded data sub
 npm install body-parser --save
  */
 
-
-app.use(bodyParser.urlencoded({
-    extended:false
-}));
-app.use(bodyParser.json());
+app.use(express.json());
 /* app.use(bodyParser.json()) basically tells the system that you want json to be used.
 
 bodyParser.urlencoded({extended: ...}) basically tells the system whether you want to use a simple algorithm for shallow parsing (i.e. false) or complex algorithm for deep parsing that can deal with nested objects (i.e. true).
